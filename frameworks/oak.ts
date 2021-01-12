@@ -17,7 +17,9 @@ export default function use(session: any, options: { [key: string]: string | num
 		}
         if (!options.httpOnly) {
             options.httpOnly = "http:" === protocol;
-		}
+        }
+            
+            console.log("options massaged", { options });
 		
 		if (sid === undefined) {
 			context.state.session = new SessionData(session);
