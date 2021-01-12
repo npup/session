@@ -36,7 +36,8 @@ export default function use(session: any, options: { [key: string]: string | num
 			context.state.session = new SessionData(session);
 			context.cookies.set("sid", context.state.session.sessionId, options);
 		} else {
-			context.state.session = new SessionData(session, sid);
+            context.state.session = new SessionData(session, sid);
+            context.cookies.set("sid", session, options);
 		}
 		
 		await context.state.session.init();
