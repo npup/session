@@ -1,17 +1,12 @@
 import { SessionData } from "../mod.ts";
 
 
-export default function use(session: any, options: { [key: string]: string | number | boolean } = {}) {
+export default function use(session: any, options: { [key: string]: string | number | boolean } = { maxAge: 60, }) {
     console.log("cookie options", { options });
-    return async (context: any, next: any) => {
+    // set default cookie options
         
-        try {
-            const sid = context.cookies.get("sid");
-            console.log("req", { context, sid });
-        // set default cookie options
-        const { protocol } = context.request.url;
         if ("boolean" != typeof options.secure) {
-            const secure = "http:" === protocol;
+            const secure = true;
             console.log("  : setting secure:", secure);    
             options.secure = secure;
         }
@@ -23,12 +18,18 @@ export default function use(session: any, options: { [key: string]: string | num
         }
             
         if ("boolean" != typeof options.httpOnly) {
-            const httpOnly = "http:" === protocol;
+            const httpOnly = true;
             console.log("  : setting httpOnly:", httpOnly);    
             options.httpOnly = httpOnly;
-        }
-            
-            console.log("options massaged", { options });
+        }    
+    console.log("options massaged", { options });
+    
+    return async (context: any, next: any) => {
+        
+        try {
+            const sid = context.cookies.get("sid");
+            console.log("req", { context, sid });
+        
 		
 		if (sid === undefined) {
 			context.state.session = new SessionData(session);
