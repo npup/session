@@ -4,7 +4,8 @@ import { SessionData } from "../mod.ts";
 type CookieOptions = Omit<Cookie, "value" | "name">;
 
 export default function use(session: any, options: CookieOptions = {}) {
-	return async (context: any, next: any) => {
+    return async (context: any, next: any) => {
+        try {
         const sid = context.cookies.get("sid");
         // set default cookie options
         const { protocol } = context.request.url;
@@ -30,6 +31,9 @@ export default function use(session: any, options: CookieOptions = {}) {
 		
 		await context.state.session.init();
 	
-		await next();
+            await next();
+        } catch (err) {
+            console.error("AJ", err);
+        }
 	}
 }
