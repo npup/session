@@ -4,9 +4,10 @@ import { SessionData } from "../mod.ts";
 export default function use(session: any, options: { [key: string]: string | number | boolean } = {}) {
     console.log("cookie options", { options });
     return async (context: any, next: any) => {
-        console.log("req", context);
+        
         try {
-        const sid = context.cookies.get("sid");
+            const sid = context.cookies.get("sid");
+            console.log("req", { context, sid });
         // set default cookie options
         const { protocol } = context.request.url;
         if ("boolean" != typeof options.secure) {
@@ -37,7 +38,7 @@ export default function use(session: any, options: { [key: string]: string | num
 			context.cookies.set("sid", context.state.session.sessionId, options);
 		} else {
             context.state.session = new SessionData(session, sid);
-            context.cookies.set("sid", session, options);
+            context.cookies.set("sid", sid, options);
 		}
 		
 		await context.state.session.init();
