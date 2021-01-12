@@ -9,14 +9,22 @@ export default function use(session: any, options: { [key: string]: string | num
         const sid = context.cookies.get("sid");
         // set default cookie options
         const { protocol } = context.request.url;
-        if (!options.secure) {
-            options.secure = "http:" === protocol;
-		}
-		if (!options.path) {
-			options.path = "/"
-		}
-        if (!options.httpOnly) {
-            options.httpOnly = "http:" === protocol;
+        if ("boolean" != typeof options.secure) {
+            const secure = "http:" === protocol;
+            console.log("  : setting secure:", secure);    
+            options.secure = secure;
+        }
+
+        if ("string" != typeof options.path) {
+            const path = "/";
+            console.log("  : setting path:", path);    
+            options.path = path;
+        }
+            
+        if ("boolean" != typeof options.httpOnly) {
+            const httpOnly = "http:" === protocol;
+            console.log("  : setting httpOnly:", httpOnly);    
+            options.httpOnly = httpOnly;
         }
             
             console.log("options massaged", { options });
