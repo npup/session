@@ -1,10 +1,10 @@
-import { Cookie } from "https://deno.land/std/http/cookie.ts";
 import { SessionData } from "../mod.ts";
 
-type CookieOptions = Omit<Cookie, "value" | "name">;
 
-export default function use(session: any, options: CookieOptions = {}) {
+export default function use(session: any, options: { [key: string]: string | number | boolean } = {}) {
+    console.log("cookie options", { options });
     return async (context: any, next: any) => {
+        console.log("req", context);
         try {
         const sid = context.cookies.get("sid");
         // set default cookie options
